@@ -5,7 +5,13 @@ const Product = mongoose.model('Product');
 module.exports = {
     async index(req, res){ 
     	const { page = 1 } = req.query;
-    	const products = await Product.paginate({}, { page , limit: 12 });  // {} caso queira passar as condiçoes
+        const { category = null } = req.query;
+        let products = null;
+        if( category == null ){
+    	   products = await Product.paginate({}, { page , limit: 12 });
+        } else {
+           products = await Product.paginate({category}, { page , limit: 12 });
+        }
 
         return res.json(products); 
     },

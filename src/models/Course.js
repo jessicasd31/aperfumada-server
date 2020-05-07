@@ -39,10 +39,11 @@ const CourseSchema = new mongoose.Schema ({
     },
     available: {
         type: Boolean,
-        required: true,
+        default: true,
     },
     promotion: {
         type: Boolean,
+        default: false,
     },
     createAt: {
         type: Date,
