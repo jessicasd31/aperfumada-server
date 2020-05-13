@@ -6,11 +6,17 @@ module.exports = {
     async index(req, res){ 
     	const { page = 1 } = req.query;
         const { category = null } = req.query;
+        let { search = null } = req.query;
         let products = null;
-        if( category == null ){
-    	   products = await Product.paginate({}, { page , limit: 12 });
+
+        if(search != null){
+            products = await Product.paginate({title: {$regex : `.*${search}.*`, $options : 'i'}}, { page , limit: 12 });
         } else {
-           products = await Product.paginate({category}, { page , limit: 12 });
+            if( category == null ){
+        	   products = await Product.paginate({}, { page , limit: 12 });
+            } else {
+               products = await Product.paginate({category}, { page , limit: 12 });
+            }
         }
 
         return res.json(products); 
